@@ -14,11 +14,19 @@ class SocketHandler(
     private val logger = LoggerFactory.getLogger(javaClass)
 
     override fun afterConnectionClosed(session: WebSocketSession, status: CloseStatus) {
-        TODO()
+        logger.debug("Session {} has been closed with status {}", session.id, status)
+        videoCallRegistry.removeByClientId(session.id)
     }
 
     override fun afterConnectionEstablished(session: WebSocketSession) {
-        TODO()
+        val message = SocketMessage(
+            "Server",
+            SocketMessage.Type.JOIN,
+            videoCallRegistry.isNotEmpty().toString(),
+            null,
+            null
+        )
+        session.send(message)
     }
 
     override fun handleTextMessage(session: WebSocketSession, serializedMessage: TextMessage) {
