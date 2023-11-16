@@ -40,14 +40,38 @@ class SocketHandler(
     }
 
     private fun handleSignal(session: WebSocketSession, message: SocketMessage, user: User) {
-        TODO()
+        try {
+            val videoCall = videoCallRegistry.findByClientId(session.id)!!
+
+            videoCall.allClients.filter { it.user == user }.forEach {
+                it.send(message.copy())
+            }
+            logger.debug("{} has sent {}", user, message.candidate ?: message.sdp)
+        } catch (e: KotlinNullPointerException) {
+            TODO()
+        }
     }
 
     private fun handleToJoin(session: WebSocketSession, user: User, chatRoom: ChatRoom) {
-        TODO()
+        try {
+            val client = Client(user, session)
+            val videoCall = videoCallRegistry.findByChatRoom(chatRoom)!!
+
+            videoCall.addClient(client)
+            logger.debug("{} has joined video-call on {}", user, chatRoom)
+        } catch (e: KotlinNullPointerException) {
+            TODO()
+        }
     }
 
     private fun handleToLeave(session: WebSocketSession, user: User) {
-        TODO()
+        try {
+            val videoCall = videoCallRegistry.findByClientId(session.id)!!
+
+            videoCall.removeClientById(session.id)
+            logger.debug("{} will leave video-call on {}", user, videoCall.chatRoom)
+        } catch (e: KotlinNullPointerException) {
+            TODO()
+        }
     }
 }
