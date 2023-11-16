@@ -18,17 +18,16 @@ data class SocketMessage(
         JOIN("join"),
         LEAVE("leave")
     }
+}
 
-    companion object {
-        private val objectMapper = ObjectMapper()
 
-        fun TextMessage.deserialize(): SocketMessage {
-            return objectMapper.readValue(this.payload, SocketMessage::class.java)
-        }
+private val objectMapper = ObjectMapper()
 
-        fun SocketMessage.serialize(): TextMessage {
-            val json = objectMapper.writeValueAsString(this)
-            return TextMessage(json)
-        }
-    }
+fun TextMessage.deserialize(): SocketMessage {
+    return objectMapper.readValue(this.payload, SocketMessage::class.java)
+}
+
+fun SocketMessage.serialize(): TextMessage {
+    val json = objectMapper.writeValueAsString(this)
+    return TextMessage(json)
 }
