@@ -12,36 +12,36 @@ class SignalingController {
 
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    @MessageMapping("/peer/offer/{camKey}/{chatRoomId}")
-    @SendTo("/topic/peer/offer/{camKey}/{chatRoomId}")
+    @MessageMapping("/peer/offer/{camKey}/{roomId}")
+    @SendTo("/topic/peer/offer/{camKey}/{roomId}")
     fun handleOffer(
         @Payload offer: String,
-        @DestinationVariable(value = "chatRoomId") chatRoomId: String,
+        @DestinationVariable(value = "roomId") roomId: String,
         @DestinationVariable(value = "camKey") camKey: String
     ): String {
-        logger.info("Handled offer at Chat Room {}: {}", chatRoomId, offer)
+        logger.info("Handled offer at Room {}: {}", roomId, offer)
         return offer
     }
 
-    @MessageMapping("/peer/iceCandidate/{camKey}/{chatRoomId}")
-    @SendTo("/topic/peer/iceCandidate/{camKey}/{chatRoomId}")
+    @MessageMapping("/peer/iceCandidate/{camKey}/{roomId}")
+    @SendTo("/topic/peer/iceCandidate/{camKey}/{roomId}")
     fun handleIceCandidate(
         @Payload candidate: String,
-        @DestinationVariable(value = "chatRoomId") chatRoomId: String,
+        @DestinationVariable(value = "roomId") roomId: String,
         @DestinationVariable(value = "camKey") camKey: String
     ): String {
-        logger.info("Handled ICE candidate at Chat Room {}: {}", chatRoomId, candidate)
+        logger.info("Handled ICE candidate at Room {}: {}", roomId, candidate)
         return candidate
     }
 
-    @MessageMapping("/peer/answer/{camKey}/{chatRoomId}")
-    @SendTo("/topic/peer/answer/{camKey}/{chatRoomId}")
+    @MessageMapping("/peer/answer/{camKey}/{roomId}")
+    @SendTo("/topic/peer/answer/{camKey}/{roomId}")
     fun handleAnswer(
         @Payload answer: String,
-        @DestinationVariable(value = "chatRoomId") chatRoomId: String,
+        @DestinationVariable(value = "roomId") roomId: String,
         @DestinationVariable(value = "camKey") camKey: String
     ): String {
-        logger.info("Handled answer at Chat Room {}: {}", chatRoomId, answer)
+        logger.info("Handled answer at Room {}: {}", roomId, answer)
         return answer
     }
 
