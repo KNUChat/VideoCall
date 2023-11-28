@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: video-call-deployment
+  labels:
+    app: video-call
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: video-call
+  template:
+    metadata:
+      name: video-call
+      labels:
+        app: video-call
+    spec:
+      containers:
+        - name: video-call
+          image: video-call:0.0.1-SNAPSHOT
+          imagePullPolicy: IfNotPresent
+      restartPolicy: Always
