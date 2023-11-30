@@ -16,10 +16,10 @@ class SignalingController {
     @SendTo("/topic/peer/offer/{camKey}/{roomId}")
     fun handleOffer(
         @Payload offer: String,
-        @DestinationVariable(value = "roomId") roomId: String,
-        @DestinationVariable(value = "camKey") camKey: String
+        @DestinationVariable(value = "camKey") camKey: String,
+        @DestinationVariable(value = "roomId") roomId: String
     ): String {
-        logger.info("Handled offer at Room {}: {}", roomId, offer)
+        logger.info("Handled offer from {} at Room {}: {}", camKey, roomId, offer)
         return offer
     }
 
@@ -27,10 +27,10 @@ class SignalingController {
     @SendTo("/topic/peer/iceCandidate/{camKey}/{roomId}")
     fun handleIceCandidate(
         @Payload candidate: String,
-        @DestinationVariable(value = "roomId") roomId: String,
-        @DestinationVariable(value = "camKey") camKey: String
+        @DestinationVariable(value = "camKey") camKey: String,
+        @DestinationVariable(value = "roomId") roomId: String
     ): String {
-        logger.info("Handled ICE candidate at Room {}: {}", roomId, candidate)
+        logger.info("Handled ICE candidate from {} at Room {}: {}", camKey, roomId, candidate)
         return candidate
     }
 
@@ -38,10 +38,10 @@ class SignalingController {
     @SendTo("/topic/peer/answer/{camKey}/{roomId}")
     fun handleAnswer(
         @Payload answer: String,
-        @DestinationVariable(value = "roomId") roomId: String,
-        @DestinationVariable(value = "camKey") camKey: String
+        @DestinationVariable(value = "camKey") camKey: String,
+        @DestinationVariable(value = "roomId") roomId: String
     ): String {
-        logger.info("Handled answer at Room {}: {}", roomId, answer)
+        logger.info("Handled answer from {} at Room {}: {}", camKey, roomId, answer)
         return answer
     }
 
