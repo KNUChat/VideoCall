@@ -1,5 +1,6 @@
 package com.knuchat.videocall.controller
 
+import com.knuchat.videocall.dto.WebSocketMessage
 import org.slf4j.LoggerFactory
 import org.springframework.messaging.handler.annotation.DestinationVariable
 import org.springframework.messaging.handler.annotation.MessageMapping
@@ -12,50 +13,56 @@ class SignalingController {
 
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    @MessageMapping("/peer/offer/{camKey}/{roomId}")
-    @SendTo("/topic/peer/offer/{camKey}/{roomId}")
+    @MessageMapping("/peer/offer/{key}/{roomId}")
+    @SendTo("/topic/peer/offer/{key}/{roomId}")
     fun handleOffer(
-        @Payload offer: String,
-        @DestinationVariable(value = "camKey") camKey: String,
+        @Payload message: WebSocketMessage,
+        @DestinationVariable(value = "key") receiverKey: String,
         @DestinationVariable(value = "roomId") roomId: String
-    ): String {
-        logger.info("Handled offer from {} at Room {}: {}", camKey, roomId, offer)
-        return offer
+    ): WebSocketMessage {
+        val senderKey = message.key
+        logger.info("Handled offer from {} to {} at Room {}",
+            senderKey, receiverKey, roomId)
+        return message
     }
 
-    @MessageMapping("/peer/iceCandidate/{camKey}/{roomId}")
-    @SendTo("/topic/peer/iceCandidate/{camKey}/{roomId}")
+    @MessageMapping("/peer/iceCandidate/{key}/{roomId}")
+    @SendTo("/topic/peer/iceCandidate/{key}/{roomId}")
     fun handleIceCandidate(
-        @Payload candidate: String,
-        @DestinationVariable(value = "camKey") camKey: String,
+        @Payload message: WebSocketMessage,
+        @DestinationVariable(value = "key") receiverKey: String,
         @DestinationVariable(value = "roomId") roomId: String
-    ): String {
-        logger.info("Handled ICE candidate from {} at Room {}: {}", camKey, roomId, candidate)
-        return candidate
+    ): WebSocketMessage {
+        val senderKey = message.key
+        logger.info("Handled ICE candidate from {} to {} at Room {}",
+            senderKey, receiverKey, roomId)
+        return message
     }
 
-    @MessageMapping("/peer/answer/{camKey}/{roomId}")
-    @SendTo("/topic/peer/answer/{camKey}/{roomId}")
+    @MessageMapping("/peer/answer/{key}/{roomId}")
+    @SendTo("/topic/peer/answer/{key}/{roomId}")
     fun handleAnswer(
-        @Payload answer: String,
-        @DestinationVariable(value = "camKey") camKey: String,
+        @Payload message: WebSocketMessage,
+        @DestinationVariable(value = "key") receiverKey: String,
         @DestinationVariable(value = "roomId") roomId: String
-    ): String {
-        logger.info("Handled answer from {} at Room {}: {}", camKey, roomId, answer)
-        return answer
+    ): WebSocketMessage {
+        val senderKey = message.key
+        logger.info("Handled answer from {} to {} at Room {}",
+            senderKey, receiverKey, roomId)
+        return message
     }
 
     @MessageMapping("/call/key")
     @SendTo("/topic/call/key")
-    fun callKey(@Payload message: String): String {
-        logger.info("Called key: {}", message)
-        return message
+    fun callKeys(@Payload unknown: Any): Any {
+        logger.info("Called keys")
+        return unknown
     }
 
     @MessageMapping("/send/key")
     @SendTo("/topic/send/key")
-    fun sendKey(@Payload message: String): String {
-        logger.info("Sent key: {}", message)
-        return message
+    fun sendKey(@Payload key: String): String {
+        logger.info("Sent key: {}", key)
+        return key
     }
 }
