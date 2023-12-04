@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: video-call-deployment
+  namespace: knu-chat-namespace
   labels:
     app: video-call
 spec:
@@ -17,6 +18,9 @@ spec:
     spec:
       containers:
         - name: video-call
-          image: video-call:0.0.1-SNAPSHOT
-          imagePullPolicy: IfNotPresent
+          image: 508947823287.dkr.ecr.ap-northeast-2.amazonaws.com/video-call:latest
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: video-call-config
       restartPolicy: Always
