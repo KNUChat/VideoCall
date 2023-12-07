@@ -1,4 +1,4 @@
-package com.knuchat.videocall.dto
+package com.knuchat.videocall.enums
 
 enum class RoomStatus {
     CONNECTED,
