@@ -19,6 +19,14 @@ class KafkaController(
         logger.info("Connected at Room {}", roomId)
 
         val roomDto = RoomDto(roomId, RoomStatus.CONNECTED)
-        roomDtoKafkaTemplate.send("connect-video-call-room", roomDto)
+        roomDtoKafkaTemplate.send("video-call-room", roomDto)
+    }
+
+    @MessageMapping("/disconnect")
+    fun disconnect(@Payload roomId: String) {
+        logger.info("Disconnected at Room {}", roomId)
+
+        val roomDto = RoomDto(roomId, RoomStatus.DISCONNECTED)
+        roomDtoKafkaTemplate.send("video-call-room", roomDto)
     }
 }
