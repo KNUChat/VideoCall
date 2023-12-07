@@ -1,6 +1,7 @@
 package com.knuchat.videocall.controller
 
 import com.knuchat.videocall.dto.RoomDto
+import com.knuchat.videocall.dto.RoomStatus
 import org.slf4j.LoggerFactory
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.messaging.handler.annotation.MessageMapping
@@ -17,7 +18,7 @@ class KafkaController(
     fun connect(@Payload roomId: String) {
         logger.info("Connected at Room {}", roomId)
 
-        val roomDto = RoomDto(roomId)
+        val roomDto = RoomDto(roomId, RoomStatus.CONNECTED)
         roomDtoKafkaTemplate.send("connect-video-call-room", roomDto)
     }
 }
