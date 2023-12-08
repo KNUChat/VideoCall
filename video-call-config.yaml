@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: video-call-config
+  namespace: knu-chat-namespace
+data:
+  spring.kafka.producer.bootstrap-servers: "kafka-service:9092"
+  
