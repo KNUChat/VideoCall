@@ -1,6 +1,7 @@
 package com.knuchat.videocall.config
 
 import com.fasterxml.jackson.databind.JsonSerializer
+import com.knuchat.videocall.dto.LogDto
 import com.knuchat.videocall.dto.RoomDto
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.common.serialization.StringSerializer
@@ -18,7 +19,19 @@ class KafkaConfig {
     lateinit var bootstrapServer: String
 
     @Bean
+    fun logDtoKafkaTemplate() = KafkaTemplate(logDtoProducerFactory())
+
+    @Bean
     fun roomDtoKafkaTemplate() = KafkaTemplate(roomDtoProducerFactory())
+
+    @Bean
+    fun logDtoProducerFactory() = DefaultKafkaProducerFactory<String, LogDto>(
+        mapOf(
+            ProducerConfig.BOOTSTRAP_SERVERS_CONFIG to bootstrapServer,
+            ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG to StringSerializer::class.java,
+            ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG to JsonSerializer::class.java
+        )
+    )
 
     @Bean
     fun roomDtoProducerFactory() = DefaultKafkaProducerFactory<String, RoomDto>(

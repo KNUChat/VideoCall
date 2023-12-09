@@ -1,7 +1,9 @@
 package com.knuchat.videocall.controller
 
 import com.knuchat.videocall.dto.WebSocketMessage
-import org.slf4j.LoggerFactory
+import com.knuchat.videocall.service.LogService
+import com.knuchat.videocall.utils.Logger
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.messaging.handler.annotation.DestinationVariable
 import org.springframework.messaging.handler.annotation.MessageMapping
 import org.springframework.messaging.handler.annotation.Payload
@@ -9,9 +11,11 @@ import org.springframework.messaging.handler.annotation.SendTo
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class SignalingController {
+class SignalingController(
+    logService: LogService
+) {
 
-    private val logger = LoggerFactory.getLogger(javaClass)
+    private val logger = Logger(KotlinLogging.logger {}, logService)
 
     @MessageMapping("/peer/offer/{key}/{roomId}")
     @SendTo("/topic/peer/offer/{key}/{roomId}")
@@ -20,9 +24,7 @@ class SignalingController {
         @DestinationVariable(value = "key") receiverKey: String,
         @DestinationVariable(value = "roomId") roomId: String
     ): WebSocketMessage {
-        val senderKey = message.key
-        logger.info("Handled offer from {} to {} at Room {}",
-            senderKey, receiverKey, roomId)
+        logger.info("Handled offer from ${message.key} to $receiverKey", roomId)
         return message
     }
 
@@ -33,9 +35,7 @@ class SignalingController {
         @DestinationVariable(value = "key") receiverKey: String,
         @DestinationVariable(value = "roomId") roomId: String
     ): WebSocketMessage {
-        val senderKey = message.key
-        logger.info("Handled ICE candidate from {} to {} at Room {}",
-            senderKey, receiverKey, roomId)
+        logger.info("Handled ICE candidate from ${message.key} to $receiverKey", roomId)
         return message
     }
 
@@ -46,9 +46,7 @@ class SignalingController {
         @DestinationVariable(value = "key") receiverKey: String,
         @DestinationVariable(value = "roomId") roomId: String
     ): WebSocketMessage {
-        val senderKey = message.key
-        logger.info("Handled answer from {} to {} at Room {}",
-            senderKey, receiverKey, roomId)
+        logger.info("Handled answer from ${message.key} to $receiverKey", roomId)
         return message
     }
 
@@ -62,7 +60,7 @@ class SignalingController {
     @MessageMapping("/send/key")
     @SendTo("/topic/send/key")
     fun sendKey(@Payload key: String): String {
-        logger.info("Sent key: {}", key)
+        logger.info("Sent key: $key")
         return key
     }
 }

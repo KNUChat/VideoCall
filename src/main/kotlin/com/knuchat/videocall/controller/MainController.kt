@@ -1,13 +1,16 @@
 package com.knuchat.videocall.controller
 
-import org.slf4j.LoggerFactory
+import com.knuchat.videocall.service.LogService
+import com.knuchat.videocall.utils.Logger
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class MainController {
-
-    private val logger = LoggerFactory.getLogger(javaClass)
+class MainController(
+    logService: LogService
+) {
+    private val logger = Logger(KotlinLogging.logger {}, logService)
 
     @GetMapping("/hello")
     fun hello(): String {
