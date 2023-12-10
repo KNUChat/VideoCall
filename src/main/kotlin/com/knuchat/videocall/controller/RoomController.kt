@@ -1,7 +1,7 @@
 package com.knuchat.videocall.controller
 
-import com.knuchat.videocall.dto.RoomConnectDto
-import com.knuchat.videocall.dto.RoomDisconnectDto
+import com.knuchat.videocall.dto.ConnectDto
+import com.knuchat.videocall.dto.DisconnectDto
 import com.knuchat.videocall.service.LogService
 import com.knuchat.videocall.service.RoomService
 import com.knuchat.videocall.utils.Logger
@@ -18,16 +18,16 @@ class RoomController(
     private val logger = Logger(KotlinLogging.logger { }, logService)
 
     @MessageMapping("/connect")
-    fun connect(@Payload roomConnectDto: RoomConnectDto) {
-        logger.info("Connected", roomConnectDto.roomId)
+    fun connect(@Payload connectDto: ConnectDto) {
+        logger.info("Connected", connectDto.roomId, connectDto.senderId)
 
-        roomService.connect(roomConnectDto)
+        roomService.connect(connectDto)
     }
 
     @MessageMapping("/disconnect")
-    fun disconnect(@Payload roomDisconnectDto: RoomDisconnectDto) {
-        logger.info("Disconnected", roomDisconnectDto.roomId)
+    fun disconnect(@Payload disconnectDto: DisconnectDto) {
+        logger.info("Disconnected", disconnectDto.roomId, disconnectDto.senderId)
 
-        roomService.disconnect(roomDisconnectDto)
+        roomService.disconnect(disconnectDto)
     }
 }
