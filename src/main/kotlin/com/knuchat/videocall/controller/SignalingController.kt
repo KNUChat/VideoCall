@@ -52,7 +52,7 @@ class SignalingController(
 
     @MessageMapping("/call/key")
     @SendTo("/topic/call/key")
-    fun callKeys(@Payload unknown: Any): Any {
+    fun callKeys(@Payload unknown: String): String {
         logger.info("Called keys")
         return unknown
     }
