@@ -6,10 +6,10 @@ import java.time.LocalDateTime
 data class LogDto(
     val type: LogType,
     val message: String,
-    val roomId: String?
+    val roomId: String?,
+    val userId: String?
 ) {
     val id: String? = null
-    val userId: String? = null
     val service = "VideoCall"
     val time = LocalDateTime.now()
 }

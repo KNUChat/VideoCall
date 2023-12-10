@@ -1,7 +1,8 @@
 package com.knuchat.videocall.config
 
 import com.knuchat.videocall.dto.LogDto
-import com.knuchat.videocall.dto.RoomDto
+import com.knuchat.videocall.dto.RoomConnectDto
+import com.knuchat.videocall.dto.RoomDisconnectDto
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.common.serialization.StringSerializer
 import org.springframework.beans.factory.annotation.Value
@@ -22,7 +23,10 @@ class KafkaConfig {
     fun logDtoKafkaTemplate() = KafkaTemplate(logDtoProducerFactory())
 
     @Bean
-    fun roomDtoKafkaTemplate() = KafkaTemplate(roomDtoProducerFactory())
+    fun roomConnectDtoKafkaTemplate() = KafkaTemplate(roomConnectDtoProducerFactory())
+
+    @Bean
+    fun roomDisconnectDtoKafkaTemplate() = KafkaTemplate(roomDisconnectDtoProducerFactory())
 
     @Bean
     fun logDtoProducerFactory() = DefaultKafkaProducerFactory<String, LogDto>(
@@ -34,7 +38,16 @@ class KafkaConfig {
     )
 
     @Bean
-    fun roomDtoProducerFactory() = DefaultKafkaProducerFactory<String, RoomDto>(
+    fun roomConnectDtoProducerFactory() = DefaultKafkaProducerFactory<String, RoomConnectDto>(
+        mapOf(
+            ProducerConfig.BOOTSTRAP_SERVERS_CONFIG to bootstrapServer,
+            ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG to StringSerializer::class.java,
+            ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG to JsonSerializer::class.java
+        )
+    )
+
+    @Bean
+    fun roomDisconnectDtoProducerFactory() = DefaultKafkaProducerFactory<String, RoomDisconnectDto>(
         mapOf(
             ProducerConfig.BOOTSTRAP_SERVERS_CONFIG to bootstrapServer,
             ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG to StringSerializer::class.java,

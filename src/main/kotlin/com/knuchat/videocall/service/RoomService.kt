@@ -1,21 +1,20 @@
 package com.knuchat.videocall.service
 
-import com.knuchat.videocall.dto.RoomDto
-import com.knuchat.videocall.enums.RoomStatus
+import com.knuchat.videocall.dto.RoomConnectDto
+import com.knuchat.videocall.dto.RoomDisconnectDto
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.stereotype.Service
 
 @Service
 class RoomService(
-    private val roomDtoKafkaTemplate: KafkaTemplate<String, RoomDto>
+    private val roomConnectDtoKafkaTemplate: KafkaTemplate<String, RoomConnectDto>,
+    private val roomDisconnectDtoKafkaTemplate: KafkaTemplate<String, RoomDisconnectDto>
 ) {
-    fun connectToRoom(roomId: String) {
-        val roomDto = RoomDto(roomId, RoomStatus.CONNECTED)
-        roomDtoKafkaTemplate.send("video-call-room", roomDto)
+    fun connect(roomConnectDto: RoomConnectDto) {
+        roomConnectDtoKafkaTemplate.send("connect-video-call", roomConnectDto)
     }
 
-    fun disconnectToRoom(roomId: String) {
-        val roomDto = RoomDto(roomId, RoomStatus.DISCONNECTED)
-        roomDtoKafkaTemplate.send("video-call-room", roomDto)
+    fun disconnect(roomDisconnectDto: RoomDisconnectDto) {
+        roomDisconnectDtoKafkaTemplate.send("disconnect-video-call", roomDisconnectDto)
     }
 }
