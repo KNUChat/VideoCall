@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController
 import io.github.oshai.kotlinlogging.KotlinLogging
 
 @RestController
-class KafkaController(
+class RoomController(
     logService: LogService,
     private val roomService: RoomService
 ) {
