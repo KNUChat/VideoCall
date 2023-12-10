@@ -8,7 +8,7 @@ import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.stereotype.Service
 
 @Service
-class RoomService(
+class NoticeService(
     private val videoCallDtoKafkaTemplate: KafkaTemplate<String, VideoCallDto>
 ) {
     fun connect(connectDto: ConnectDto) {
