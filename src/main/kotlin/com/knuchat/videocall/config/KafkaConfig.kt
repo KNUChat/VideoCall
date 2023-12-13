@@ -1,7 +1,7 @@
 package com.knuchat.videocall.config
 
 import com.knuchat.videocall.dto.LogDto
-import com.knuchat.videocall.dto.RoomDto
+import com.knuchat.videocall.dto.VideoCallDto
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.common.serialization.StringSerializer
 import org.springframework.beans.factory.annotation.Value
@@ -22,7 +22,7 @@ class KafkaConfig {
     fun logDtoKafkaTemplate() = KafkaTemplate(logDtoProducerFactory())
 
     @Bean
-    fun roomDtoKafkaTemplate() = KafkaTemplate(roomDtoProducerFactory())
+    fun videoCallDtoKafkaTemplate() = KafkaTemplate(videoCallDtoProducerFactory())
 
     @Bean
     fun logDtoProducerFactory() = DefaultKafkaProducerFactory<String, LogDto>(
@@ -34,7 +34,7 @@ class KafkaConfig {
     )
 
     @Bean
-    fun roomDtoProducerFactory() = DefaultKafkaProducerFactory<String, RoomDto>(
+    fun videoCallDtoProducerFactory() = DefaultKafkaProducerFactory<String, VideoCallDto>(
         mapOf(
             ProducerConfig.BOOTSTRAP_SERVERS_CONFIG to bootstrapServer,
             ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG to StringSerializer::class.java,

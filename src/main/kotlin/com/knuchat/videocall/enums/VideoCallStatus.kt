@@ -1,6 +1,6 @@
 package com.knuchat.videocall.enums
 
-enum class RoomStatus {
+enum class VideoCallStatus {
     CONNECTED,
     DISCONNECTED
 }
